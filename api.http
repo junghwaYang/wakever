@@ -1,0 +1,154 @@
+# 아프리카TV API 테스트
+# VS Code REST Client 확장용 파일
+
+### 변수 설정 (선택사항)
+@baseUrl = https://bjapi.afreecatv.com
+@liveApiUrl = https://live.afreecatv.com
+@userAgent = Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+
+### 1. Station API - 우왁굳 정보 조회
+GET https://bjapi.afreecatv.com/api/ecvhao/station
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+Accept: application/json
+Accept-Language: ko-KR,ko;q=0.9,en;q=0.8
+Cache-Control: no-cache
+
+# "profile_image": "//profile.img.sooplive.co.kr/LOGO/ec/ecvhao/ecvhao.jpg" => 프로필 이미지(https:를 붙이면 바로 접근 가능)
+
+###
+GET https://bjapi.afreecatv.com/api/rrvv17/station
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+Accept: application/json
+Accept-Language: ko-KR,ko;q=0.9,en;q=0.8
+Cache-Control: no-cache
+
+### 3. Live API - 우왁굳 라이브 상태 확인
+POST https://live.afreecatv.com/afreeca/player_live_api.php
+Content-Type: application/x-www-form-urlencoded
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+Accept: application/json
+Referer: https://play.afreecatv.com/ecvhao
+Origin: https://play.afreecatv.com
+
+bid=ecvhao
+
+###
+
+POST https://live.afreecatv.com/afreeca/player_live_api.php
+Content-Type: application/x-www-form-urlencoded
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+Accept: application/json
+
+bid=rrvv17
+
+#	•	BJID: "rrvv17" — 방송 진행자(BJ)의 ID
+# •	BJNICK: "항상#댐성태" — BJ의 닉네임 (문자 인코딩이 되어 있어 디코딩하면 “항상#댐성태”)
+# •	TITLE: "댐성태 24시간벌칙 3시까지오겠습니다" — 방송 제목
+# •	CATEGORY_TAGS: ["PUBG: 배틀그라운드"] — 방송 카테고리
+# •	BNO: "284534362" — 라이브 방송 번호
+# https://liveimg.sooplive.co.kr/h/284534362.webp => 라이브방송 썸네일
+
+
+###
+
+### 7. User-Agent 없이 요청 (차단되는지 확인)
+GET https://bjapi.afreecatv.com/api/ecvhao/station
+Accept: application/json
+
+###
+
+### 8. 다양한 User-Agent 테스트
+GET https://bjapi.afreecatv.com/api/ecvhao/station
+User-Agent: curl/7.68.0
+Accept: application/json
+
+###
+
+GET https://bjapi.afreecatv.com/api/ecvhao/station
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+Accept: application/json
+
+###
+
+### 9. 모바일 User-Agent 테스트
+GET https://bjapi.afreecatv.com/api/ecvhao/station
+User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2 Mobile/15E148 Safari/604.1
+Accept: application/json
+
+###
+
+### 10. 유명 스트리머들 테스트
+GET https://bjapi.afreecatv.com/api/jingburger/station
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+Accept: application/json
+
+###
+
+POST https://live.afreecatv.com/afreeca/player_live_api.php
+Content-Type: application/x-www-form-urlencoded
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+Accept: application/json
+
+bid=jingburger
+
+###
+
+### 12. JSON 응답 구조 분석용 (주석으로 예상 응답)
+# Station API 예상 응답:
+# {
+#   "station": {
+#     "user_id": "ecvhao",
+#     "user_nick": "우왁굳",
+#     "profile_image": "https://profile.img.afreecatv.com/...",
+#     "fan_cnt": 293845,
+#     "total_view_cnt": 15678234,
+#     "broad_start": "2024-01-15T15:30:00+09:00",
+#     "broad_grade": "파트너BJ"
+#   }
+# }
+
+GET https://bjapi.afreecatv.com/api/ecvhao/station
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+Accept: application/json
+
+###
+
+### 13. Live API 예상 응답 테스트
+# Live API 예상 응답:
+# {
+#   "CHANNEL": {
+#     "RESULT": 1,  // 1=라이브, 0=오프라인
+#     "TITLE": "방송 제목",
+#     "BNO": "268443123",
+#     "CATE": "토크/캠방", 
+#     "TOTAL_VIEW_CNT": "1234",
+#     "CATEGORY_TAGS": ["태그1", "태그2"]
+#   }
+# }
+
+POST https://live.afreecatv.com/afreeca/player_live_api.php
+Content-Type: application/x-www-form-urlencoded
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+Accept: application/json
+
+bid=ecvhao
+
+###
+
+### 14. CORS 테스트 (OPTIONS 요청)
+OPTIONS https://bjapi.afreecatv.com/api/ecvhao/station
+Origin: http://localhost:3000
+Access-Control-Request-Method: GET
+Access-Control-Request-Headers: User-Agent
+
+###
+
+### 15. 타임아웃 테스트용 (느린 응답)
+GET https://bjapi.afreecatv.com/api/ecvhao/station
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+Accept: application/json
+# @note 응답 시간 체크
+
+###
+
+GET https://cafe.naver.com/f-e/cafes/27842958/articles/20269288?menuid=24&referrerAllArticles=false
