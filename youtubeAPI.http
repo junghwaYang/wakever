@@ -1,0 +1,4 @@
+GET https://www.googleapis.com/youtube/v3/channels
+  ?part=snippet,statistics
+  &id=UCBkyj16n2snkRg1BAzpovXQ
+  &key=AIzaSyDqeYYcxdtV1rUKT6V1RQFdgihf3oopTdo

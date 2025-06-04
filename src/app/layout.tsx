@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Header from '@/components/layout/Header';
+import { SidebarProvider } from '@/components/ui/sidebar';
+import { AppSidebar } from '@/components/AppSideBar';
 
 export const metadata: Metadata = {
   title: 'wakever',
@@ -15,8 +17,13 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="antialiased">
-        <Header />
-        {children}
+        <SidebarProvider>
+          <AppSidebar />
+          <main className="w-full">
+            <Header />
+            {children}
+          </main>
+        </SidebarProvider>
       </body>
     </html>
   );
